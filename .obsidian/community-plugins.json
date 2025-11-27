@@ -1,4 +1,6 @@
 [
   "obsidian-git",
-  "templater-obsidian"
+  "templater-obsidian",
+  "obsidian-custom-attachment-location",
+  "obsidian-image-auto-upload-plugin"
 ]
