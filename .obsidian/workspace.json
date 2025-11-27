@@ -180,11 +180,17 @@
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:创建新数据库": false
+      "bases:创建新数据库": false,
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "cc69d12c51fe929d",
+  "active": "a2d952167a4f6a39",
   "lastOpenFiles": [
+    "新建文件夹",
+    "~建 XLSX 工作表.tmp",
+    "新建 XLSX 工作表.xlsx",
+    "新建 文本文档.txt",
+    "node.js",
     "未命名.md",
     "欢迎.md",
     "创建链接.md",
