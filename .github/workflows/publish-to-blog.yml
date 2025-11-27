@@ -1,62 +1,47 @@
 name: Publish to blog
-
 on:
   push:
     branches: [ main ]
     paths:
       - 'blog/**'
+      - 'blog/authors.yml'
 
 jobs:
   sync:
     runs-on: ubuntu-latest
-    environment: BLOG_REPO_TOKEN
-    permissions:
-      contents: write
-      pull-requests: write
-    env:
-      VAULT_BLOG_DIR: blog
-      BLOG_REPO_OWNER: ${{ secrets.BLOG_REPO_OWNER }}
-      BLOG_REPO_NAME: ${{ secrets.BLOG_REPO_NAME }}
-      BLOG_REPO_BRANCH: ${{ secrets.BLOG_REPO_BRANCH }}
-      BLOG_REPO_TOKEN: ${{ secrets.BLOG_REPO_TOKEN }}
-      BRANCH: sync/vault-${{ github.run_id }}
-
     steps:
       - uses: actions/checkout@v4
-
-      - name: Collect markdown
+      - name: Collect markdown from vault
         run: |
           mkdir -p sync_src
-          rsync -av --include='*/' --include='*.md' --exclude='*' "${VAULT_BLOG_DIR}/" sync_src/
-
+          rsync -av --include='*/' --include='*.md' --include='authors.yml' --exclude='*' blog/ sync_src/
       - name: Clone blog repo
         run: |
-          git clone --depth=1 "https://x-access-token:${BLOG_REPO_TOKEN}@github.com/${BLOG_REPO_OWNER}/${BLOG_REPO_NAME}.git" blog_repo
-
+          git clone --depth=1 "https://x-access-token:${{ secrets.BLOG_REPO_TOKEN }}@github.com/wwwqqqzzz/blog.git" blog_repo
       - name: Prepare branch and copy files
         run: |
           cd blog_repo
-          git checkout -b "${BRANCH}" "${BLOG_REPO_BRANCH}"
-          mkdir -p blog
+          git checkout -B sync/vault origin/main || git checkout -B sync/vault
           rsync -av --delete ../sync_src/ blog/
           git config user.email "2158588419@qq.com"
           git config user.name "wwwqqqzzz-bot"
           if git status --porcelain | grep -q .; then
             git add blog
             git commit -m "chore(posts): sync from vault"
-            git push -u origin "${BRANCH}"
+            git push -u origin sync/vault
           else
             echo "No changes"
             exit 0
           fi
-
-      - name: Create PR
-        env:
-          GH_TOKEN: ${{ secrets.BLOG_REPO_TOKEN }}
-        run: |
-          gh pr create \
-            --repo "${BLOG_REPO_OWNER}/${BLOG_REPO_NAME}" \
-            --base "${BLOG_REPO_BRANCH}" \
-            --head "${BRANCH}" \
-            --title "chore(posts): sync from vault" \
-            --body "Automated sync from leoloop_vault"
+      - name: Open PR with automerge
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.BLOG_REPO_TOKEN }}
+          title: chore(posts): sync from vault
+          body: Automated sync from leoloop_vault
+          commit-message: chore(posts): sync from vault
+          branch: sync/vault
+          base: main
+          labels: sync-from-vault
+          merge-method: squash
+          auto-merge: true
