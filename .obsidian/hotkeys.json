@@ -1,0 +1,11 @@
+{
+  "templater-obsidian:create-new-note-from-template": [],
+  "templater-obsidian:create-blog/_templates/blog-post.md": [
+    {
+      "modifiers": [
+        "Alt"
+      ],
+      "key": "N"
+    }
+  ]
+}
