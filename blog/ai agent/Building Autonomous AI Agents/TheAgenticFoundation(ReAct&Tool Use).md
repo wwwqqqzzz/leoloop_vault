@@ -1,3 +1,18 @@
+---
+cssclasses:
+  - ai agent
+  - 教程
+  - ai
+tags:
+  - ai学习
+  - 教程
+  - AI
+title: TheAgenticFoundation(ReAct&Tool Use)
+date: 2025-12-09
+authors:
+  - wqz
+description: aiagent\
+---
 # 为智能代理设置环境
 
 > [!NOTE]
