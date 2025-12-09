@@ -11,7 +11,10 @@ title: TheAgenticFoundation(ReAct&Tool Use)
 date: 2025-12-09
 authors:
   - wqz
-description: aiagent\
+description: https://www.coursera.org/learn/building-autonomous-ai-agents/lecture/IRShV/specialization-introduction 课程学习
+collection: ai agent
+slug: ai agent
+collection_order: 1
 ---
 # 为智能代理设置环境
 
